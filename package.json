@@ -1,0 +1,16 @@
+{
+  "name": "todo-project",
+  "version": "1.0.0",
+  "description": "Simple Fullstack Todo Project",
+  "main": "index.js",
+  "author": "Edward Rees",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  },
+  "scripts": {
+    "server": "cd backend; yarn start",
+    "site": "cd frontend; yarn start"
+  }
+}
