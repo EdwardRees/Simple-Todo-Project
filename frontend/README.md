@@ -1,13 +1,16 @@
-# Simple Todo List
+# Simple Todo List Frontend
 
-A simple todo list frontend using ReactJS. 
+The frontend of a simple todo list
 
 ## Technologies
 
-- ReactJS
+- React
+- Typescript
+- Redux
+- React Redux
+- React Navigation
 
 ## Instructions to run
 
-1. `yarn` or `npm install`
-2. `yarn start` or `npm run start`
-
+- `yarn` or `npm install`
+- `yarn start` or `npm run start`
