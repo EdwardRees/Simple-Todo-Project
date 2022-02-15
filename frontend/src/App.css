@@ -5,3 +5,6 @@ body {
 .strike-through {
   text-decoration: line-through;
 }
+ul {
+  list-style: none;
+}

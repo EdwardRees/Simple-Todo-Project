@@ -211,7 +211,9 @@ const SpecificList = () => {
         <h1>
           <strong>{toTitleCase(name)}</strong>
         </h1>
+        <br />
         <Row>{renderAddTodo(id)}</Row>
+        <br />
         <Padding>
           <ul>{parseTodos(id, todos)}</ul>
         </Padding>

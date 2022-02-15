@@ -64,18 +64,87 @@ const TodoLists = () => {
     return todoLists.map((list: any) => {
       return (
         <li key={list.id}>
-          {/* {isEditing && editingTodoList.id === list.id ? (
-             <div />
-           ) : ( */}
-
-          <Link className="btn btn-info" to={`/lists/${list.id}`}>
-            {toTitleCase(list.title)}
-          </Link>
-          {/* )
-             } */}
+          {isEditing && editingTodoList.id === list.id ? (
+            <Row>{renderEditTodoList()}</Row>
+          ) : (
+            <Row>
+              <div>
+                <span>{toTitleCase(list.title)}</span>
+              </div>
+              <div>
+                <Link className="btn btn-primary" to={`/lists/${list.id}`}>
+                  View {toTitleCase(list.title)}
+                </Link>
+                <button
+                  className="btn btn-info"
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                    setEditingTodoList({ id: list.id, title: list.title });
+                  }}
+                >
+                  Edit List
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteList(list.id)}
+                >
+                  Delete List
+                </button>
+              </div>
+            </Row>
+          )}
         </li>
       );
     });
+  };
+
+  const renderAddTodo = () => {
+    return (
+      <div>
+        <div className="input-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Add New Todo List"
+            onChange={(e) => setNewTodoList(e.target.value)}
+            value={newTodoList}
+          />
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              addList(newTodoList);
+            }}
+          >
+            Add Todo List
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const renderEditTodoList = () => {
+    return (
+      <div>
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            onChange={(e) =>
+              setEditingTodoList({ ...editingTodoList, title: e.target.value })
+            }
+            value={editingTodoList.title}
+          />
+          <button
+            className="btn btn-info"
+            onClick={() =>
+              updateList(editingTodoList.id, editingTodoList.title)
+            }
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -87,9 +156,9 @@ const TodoLists = () => {
       <Navbar></Navbar>
       <Container>
         <h1>Todo Lists</h1>
-        <Row>
-          <button className="btn btn-primary">Add Todo List</button>
-        </Row>
+        <br />
+        <Row>{renderAddTodo()}</Row>
+        <br />
         <Left>{showLists(todoLists)}</Left>
       </Container>
     </React.Fragment>
