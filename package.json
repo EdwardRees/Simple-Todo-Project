@@ -12,6 +12,7 @@
   "scripts": {
     "backend": "npm start --prefix backend start",
     "frontend": "npm start --prefix frontend start",
-    "concurrently": "concurrently \"yarn backend\" \"yarn frontend\""
+    "mobile": "npm start --prefix mobile",
+    "concurrently": "concurrently \"yarn backend\" \"yarn frontend\" \"yarn mobile\""
   }
 }
