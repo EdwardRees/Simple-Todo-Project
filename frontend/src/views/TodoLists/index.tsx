@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Container, Left, Navbar, Row } from "../../components";
 import { api } from "../../constants";
@@ -9,7 +9,6 @@ import { toTitleCase } from "../../util";
 const TodoLists = () => {
   const [todoLists, setTodoLists] = useState([]);
   const [, setRefreshList] = useState([]);
-  const [name, setName] = useState("");
   const [errors, setErrors] = useState([]);
   const [newTodoList, setNewTodoList] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -147,21 +146,34 @@ const TodoLists = () => {
     );
   };
 
+  const renderErrors = () => {
+    if (errors.length !== 0) {
+      return (
+        <div className="alert alert-danger" role="alert">
+          {errors.map((error: any) => (
+            <div key={error.id}>{error.message}</div>
+          ))}
+        </div>
+      );
+    }
+  }
+
   useEffect(() => {
     getLists();
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Navbar></Navbar>
       <Container>
+        {renderErrors()}
         <h1>Todo Lists</h1>
         <br />
         <Row>{renderAddTodo()}</Row>
         <br />
         <Left>{showLists(todoLists)}</Left>
       </Container>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

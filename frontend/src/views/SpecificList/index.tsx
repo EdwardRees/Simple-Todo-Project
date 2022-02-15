@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as React from "react";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Left, Navbar, Row } from "../../components";
+import styled from "styled-components";
+import { Container, Navbar, Row } from "../../components";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
 
@@ -108,7 +108,9 @@ const SpecificList = () => {
               <div>{renderEditTodo(id, todoId)}</div>
             ) : (
               <div>
-                <span className={complete ? "strike-through" : ""}>{content}</span>
+                <span className={complete ? "strike-through" : ""}>
+                  {content}
+                </span>
               </div>
             )}
             {isEditing && editingTodo.id === todoId ? (
@@ -200,14 +202,27 @@ const SpecificList = () => {
     );
   };
 
+  const renderErrors = () => {
+    if (errors.length !== 0) {
+      return (
+        <div className="alert alert-danger" role="alert">
+          {errors.map((error: any) => (
+            <div key={error.id}>{error.message}</div>
+          ))}
+        </div>
+      );
+    }
+  };
+
   useEffect(() => {
     getTodos();
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Navbar></Navbar>
       <Container>
+        {renderErrors()}
         <h1>
           <strong>{toTitleCase(name)}</strong>
         </h1>
@@ -218,7 +233,7 @@ const SpecificList = () => {
           <ul>{parseTodos(id, todos)}</ul>
         </Padding>
       </Container>
-    </React.Fragment>
+    </Fragment>
   );
 };
 
