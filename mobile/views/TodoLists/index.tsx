@@ -10,16 +10,20 @@ import {
 import axios from "axios";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
-import { ListItem } from '../../components';
+import { TodoListItem } from "../../components";
 
 const renderTodoList = ({ item }: any) => {
   const todoList = item;
   return (
-    <ListItem
-      onPress={() => {console.info(todoList.title)}}
+    <TodoListItem
+      onPress={() => {
+        console.info(todoList.title);
+      }}
       id={todoList.id}
       title={todoList.title}
       todoItems={todoList.todoItems}
+      editPress={() => console.info(`Pressed Edit for ${todoList.title}!`)}
+      deletePress={() => console.info(`Pressed Delete for ${todoList.title}!`)}
     />
   );
 };
