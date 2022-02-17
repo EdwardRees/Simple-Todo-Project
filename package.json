@@ -12,7 +12,7 @@
   "scripts": {
     "backend": "npm start --prefix backend start",
     "frontend": "npm start --prefix frontend start",
-    "mobile": "npm start --prefix mobile",
+    "mobile": "python3 ip.py; npm start --prefix mobile",
     "concurrently": "concurrently \"yarn backend\" \"yarn frontend\" \"yarn mobile\""
   }
 }

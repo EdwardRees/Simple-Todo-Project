@@ -8,8 +8,13 @@ s.close()
 
 port = 8080 # Might be 8000 for you, depends on what the server is listening on
 
-info = {"id": ip, "port": port}
+string = "";
+string += f"const url = \"{ip}\";\n";
+string += f"const port = {port};\n";
+string += "const api = `http://${url}:${port}/api`;\n";
+string += "\n";
+string += "export { api };\n";
 
 # Creates the file for us to know where to connect to
-with open("ip.txt", "w") as f:
-    f.write(str(info))
+with open("mobile/constants/index.tsx", "w") as f:
+    f.write(string)

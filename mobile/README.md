@@ -1,10 +1,11 @@
-# Simple Todo List Frontend
+# Simple Todo List Mobile
 
-The frontend of a simple todo list
+The mobile version of a simple todo list
 
 ## Technologies
 
-- React
+- React Native
+- Expo
 - Typescript
 - React Navigation
 - Axios
@@ -12,4 +13,4 @@ The frontend of a simple todo list
 ## Instructions to run
 
 - `yarn` or `npm install`
-- `yarn start` or `npm run start`
+- `expo start`
