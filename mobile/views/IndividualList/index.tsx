@@ -2,17 +2,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import * as React from "react";
 import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
-import { TodoItem } from "../../components";
-import { api } from "../../constants";
-import { toTitleCase } from "../../util";
-import {
-  ButtonContainer,
+import { TodoItem,   ButtonContainer,
   CancelButton,
   InnerModalContainer,
   ModalViewContainer,
   UpdateButton,
-  UpdateInput,
-} from "./components";
+  UpdateInput,} from "../../components";
+import { api } from "../../constants";
+import { toTitleCase } from "../../util";
 const { useState, useEffect } = React;
 import { Ionicons } from "@expo/vector-icons";
 

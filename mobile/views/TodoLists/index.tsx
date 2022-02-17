@@ -1,27 +1,19 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-} from "react-native";
-import axios from "axios";
-import { api } from "../../constants";
-import { toTitleCase } from "../../util";
-import { TodoListItem } from "../../components";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
 import {
   ButtonContainer,
   CancelButton,
   InnerModalContainer,
   ModalViewContainer,
+  TodoListItem,
   UpdateButton,
   UpdateInput,
-} from "./components";
-import { Ionicons } from "@expo/vector-icons";
+} from "../../components";
+import { api } from "../../constants";
 
 const TodoLists = () => {
   const navigation = useNavigation();
