@@ -12,6 +12,8 @@ import {
   TodoListItem,
   UpdateButton,
   UpdateInput,
+  Empty,
+  EmptyText,
 } from "../../components";
 import { api } from "../../constants";
 
@@ -30,7 +32,7 @@ const TodoLists = () => {
       return (
         <Ionicons
           name="add-outline"
-          size={25}
+          size={30}
           onPress={() => {
             setAddModalVisible(true);
           }}
@@ -72,9 +74,12 @@ const TodoLists = () => {
   };
 
   const addList = (title: string) => {
-    return axios.post(`${api}/todos`, { title }).then(() => {
-      getLists();
-    });
+    return axios
+      .post(`${api}/todos`, { title })
+      .then(() => {
+        getLists();
+      })
+      .catch((err) => console.error(err.response.data));
   };
 
   const updateList = (id: string, title: string) => {
@@ -85,15 +90,94 @@ const TodoLists = () => {
   };
 
   const deleteList = (id: string) => {
-    return axios.delete(`${api}/todos/${id}`).then(() => getLists());
+    return axios
+      .delete(`${api}/todos/${id}`)
+      .then(() => getLists())
+      .catch((err) => console.error(err.response.data));
   };
 
   const renderLists = (todoLists: any) => {
     if (todoLists.length === 0) {
       return (
-        <View>
-          <Text>No todo lists found</Text>
-        </View>
+        <SafeAreaView>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={addModalVisible}
+            onRequestClose={() => {
+              setAddModalVisible(false);
+            }}
+          >
+            <ModalViewContainer>
+              <InnerModalContainer>
+                <UpdateInput
+                  onChangeText={setNewListTitle}
+                  value={newListTitle}
+                ></UpdateInput>
+                <ButtonContainer>
+                  <UpdateButton
+                    onPress={() => {
+                      addList(newListTitle);
+                      setAddModalVisible(false);
+                      setNewListTitle("");
+                    }}
+                  >
+                    <Text>Update</Text>
+                  </UpdateButton>
+                  <CancelButton
+                    onPress={() => {
+                      setAddModalVisible(false);
+                      setNewListTitle("");
+                    }}
+                  >
+                    <Text>Close</Text>
+                  </CancelButton>
+                </ButtonContainer>
+              </InnerModalContainer>
+            </ModalViewContainer>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(false);
+            }}
+          >
+            <ModalViewContainer>
+              <InnerModalContainer>
+                <UpdateInput
+                  onChangeText={setEditingListText}
+                  value={editingListText}
+                ></UpdateInput>
+                <ButtonContainer>
+                  <UpdateButton
+                    onPress={() => {
+                      updateList(editingList.id, editingListText);
+                      setModalVisible(false);
+                      setEditingListText("");
+                      setEditingList({ id: "", title: "" });
+                    }}
+                  >
+                    <Text>Update</Text>
+                  </UpdateButton>
+                  <CancelButton
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      setEditingListText("");
+                      setEditingList({ id: "", title: "" });
+                    }}
+                  >
+                    <Text>Close</Text>
+                  </CancelButton>
+                </ButtonContainer>
+              </InnerModalContainer>
+            </ModalViewContainer>
+          </Modal>
+          <Empty>
+            <EmptyText>No Todo Lists Found!</EmptyText>
+          </Empty>
+        </SafeAreaView>
       );
     }
     return (

@@ -2,12 +2,17 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import * as React from "react";
 import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
-import { TodoItem,   ButtonContainer,
+import {
+  TodoItem,
+  ButtonContainer,
   CancelButton,
   InnerModalContainer,
   ModalViewContainer,
   UpdateButton,
-  UpdateInput,} from "../../components";
+  UpdateInput,
+  Empty,
+  EmptyText,
+} from "../../components";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
 const { useState, useEffect } = React;
@@ -27,7 +32,10 @@ const IndividualList = () => {
 
   const addTodo = (todoListId: string, content: string) => {
     return axios
-      .post(`${api}/todos/${todoListId}/items`, { content, complete: `${false}` })
+      .post(`${api}/todos/${todoListId}/items`, {
+        content,
+        complete: `${false}`,
+      })
       .then(() => getTodoItems())
       .catch((err) => console.error(err.response.data));
   };
@@ -56,13 +64,15 @@ const IndividualList = () => {
       .put(`${api}/todos/${todoId}/items/${todoItemId}`, {
         complete: `${complete}`,
       })
-      .then(() => getTodoItems());
+      .then(() => getTodoItems())
+      .catch((err) => console.error(err.response.data));
   };
 
   const deleteTodo = (todoId: string, todoItemId: string) => {
     return axios
       .delete(`${api}/todos/${todoId}/items/${todoItemId}`)
-      .then(() => getTodoItems());
+      .then(() => getTodoItems())
+      .catch((err) => console.error(err.response.data));
   };
 
   const renderTodoItems = ({ item }: any) => {
@@ -102,9 +112,93 @@ const IndividualList = () => {
   const renderItems = (todoItems: any) => {
     if (todoItems.length === 0) {
       return (
-        <View>
-          <Text>No items found</Text>
-        </View>
+        <SafeAreaView>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={addModalVisible}
+            onRequestClose={() => {
+              setAddModalVisible(false);
+            }}
+          >
+            <ModalViewContainer>
+              <InnerModalContainer>
+                <UpdateInput
+                  onChangeText={setNewTodoContent}
+                  value={newTodoContent}
+                ></UpdateInput>
+                <ButtonContainer>
+                  <UpdateButton
+                    onPress={() => {
+                      addTodo(id, newTodoContent);
+                      setAddModalVisible(false);
+                      setNewTodoContent("");
+                    }}
+                  >
+                    <Text>Update</Text>
+                  </UpdateButton>
+                  <CancelButton
+                    onPress={() => {
+                      setAddModalVisible(false);
+                      setNewTodoContent("");
+                    }}
+                  >
+                    <Text>Close</Text>
+                  </CancelButton>
+                </ButtonContainer>
+              </InnerModalContainer>
+            </ModalViewContainer>
+          </Modal>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <ModalViewContainer>
+              <InnerModalContainer>
+                <UpdateInput
+                  onChangeText={setEditingContentText}
+                  value={editingContentText}
+                ></UpdateInput>
+                <ButtonContainer>
+                  <UpdateButton
+                    onPress={() => {
+                      console.info(`Pressed Update for ${editingContentText}!`);
+                      updateContent(
+                        editingTodo.todoId,
+                        editingTodo.id,
+                        editingContentText
+                      );
+                      setModalVisible(false);
+                      setEditingContentText("");
+                      setEditingTodo({ todoId: "", id: "", content: "" });
+                    }}
+                  >
+                    <Text>Update</Text>
+                  </UpdateButton>
+                  <CancelButton
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      setEditingContentText("");
+                      setEditingTodo({ todoId: "", id: "", content: "" });
+                    }}
+                  >
+                    <Text>Close</Text>
+                  </CancelButton>
+                </ButtonContainer>
+              </InnerModalContainer>
+            </ModalViewContainer>
+          </Modal>
+          <Empty>
+            <EmptyText>
+              No Items Found in List: "{toTitleCase(title)}"
+            </EmptyText>
+          </Empty>
+        </SafeAreaView>
       );
     }
     return (
@@ -208,10 +302,8 @@ const IndividualList = () => {
         return (
           <Ionicons
             name="add-outline"
-            size={25}
-            onPress={() => {
-              setAddModalVisible(true);
-            }}
+            size={30}
+            onPress={() => setAddModalVisible(true)}
           />
         );
       },

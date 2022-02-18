@@ -1,9 +1,9 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
+import { Ionicons } from "@expo/vector-icons";
+import * as React from "react";
+import { Text, TouchableOpacity, ScrollView } from "react-native";
+import styled from "styled-components/native";
 
-import { toTitleCase } from '../../util';
+import { toTitleCase } from "../../util";
 
 const Container = styled.View`
   padding: 20px;
@@ -25,7 +25,9 @@ const TodoListItem = (props: any) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <Container>
-        <Text>{toTitleCase(title)}</Text>
+        <ScrollView style={{ paddingHorizontal: 10 }}>
+          <Text style={{ fontSize: 16 }}>{toTitleCase(title)}</Text>
+        </ScrollView>
         <Buttons>
           <Ionicons name="create" size={25} onPress={onEdit}></Ionicons>
           <Ionicons name="trash" size={25} onPress={onDelete}></Ionicons>
