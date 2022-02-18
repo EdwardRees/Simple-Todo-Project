@@ -1,22 +1,18 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import * as React from "react";
 import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
 import {
-  TodoItem,
   ButtonContainer,
-  CancelButton,
-  InnerModalContainer,
-  ModalViewContainer,
-  UpdateButton,
-  UpdateInput,
-  Empty,
-  EmptyText,
+  CancelButton, Empty,
+  EmptyText, InnerModalContainer,
+  ModalViewContainer, TodoItem, UpdateButton,
+  UpdateInput, ButtonText
 } from "../../components";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
 const { useState, useEffect } = React;
-import { Ionicons } from "@expo/vector-icons";
 
 const IndividualList = () => {
   const [todoItems, setTodoItems] = useState([]);
@@ -126,7 +122,9 @@ const IndividualList = () => {
                 <UpdateInput
                   onChangeText={setNewTodoContent}
                   value={newTodoContent}
+                  multiline={true}
                 ></UpdateInput>
+                <Text></Text>
                 <ButtonContainer>
                   <UpdateButton
                     onPress={() => {
@@ -135,7 +133,7 @@ const IndividualList = () => {
                       setNewTodoContent("");
                     }}
                   >
-                    <Text>Update</Text>
+                    <ButtonText>Update</ButtonText>
                   </UpdateButton>
                   <CancelButton
                     onPress={() => {
@@ -143,7 +141,7 @@ const IndividualList = () => {
                       setNewTodoContent("");
                     }}
                   >
-                    <Text>Close</Text>
+                    <ButtonText>Close</ButtonText>
                   </CancelButton>
                 </ButtonContainer>
               </InnerModalContainer>
@@ -163,7 +161,9 @@ const IndividualList = () => {
                 <UpdateInput
                   onChangeText={setEditingContentText}
                   value={editingContentText}
+                  multiline={true}
                 ></UpdateInput>
+                <Text></Text>
                 <ButtonContainer>
                   <UpdateButton
                     onPress={() => {
@@ -178,7 +178,7 @@ const IndividualList = () => {
                       setEditingTodo({ todoId: "", id: "", content: "" });
                     }}
                   >
-                    <Text>Update</Text>
+                    <ButtonText>Update</ButtonText>
                   </UpdateButton>
                   <CancelButton
                     onPress={() => {
@@ -187,7 +187,7 @@ const IndividualList = () => {
                       setEditingTodo({ todoId: "", id: "", content: "" });
                     }}
                   >
-                    <Text>Close</Text>
+                    <ButtonText>Close</ButtonText>
                   </CancelButton>
                 </ButtonContainer>
               </InnerModalContainer>
@@ -216,7 +216,9 @@ const IndividualList = () => {
               <UpdateInput
                 onChangeText={setNewTodoContent}
                 value={newTodoContent}
+                multiline={true}
               ></UpdateInput>
+              <Text></Text>
               <ButtonContainer>
                 <UpdateButton
                   onPress={() => {
@@ -225,15 +227,16 @@ const IndividualList = () => {
                     setNewTodoContent("");
                   }}
                 >
-                  <Text>Update</Text>
+                  <ButtonText>Add</ButtonText>
                 </UpdateButton>
+                <Text>{" "}</Text>
                 <CancelButton
                   onPress={() => {
                     setAddModalVisible(false);
                     setNewTodoContent("");
                   }}
                 >
-                  <Text>Close</Text>
+                  <ButtonText>Close</ButtonText>
                 </CancelButton>
               </ButtonContainer>
             </InnerModalContainer>
@@ -253,7 +256,9 @@ const IndividualList = () => {
               <UpdateInput
                 onChangeText={setEditingContentText}
                 value={editingContentText}
+                multiline={true}
               ></UpdateInput>
+              <Text></Text>
               <ButtonContainer>
                 <UpdateButton
                   onPress={() => {
@@ -268,7 +273,7 @@ const IndividualList = () => {
                     setEditingTodo({ todoId: "", id: "", content: "" });
                   }}
                 >
-                  <Text>Update</Text>
+                  <ButtonText>Update</ButtonText>
                 </UpdateButton>
                 <CancelButton
                   onPress={() => {
@@ -277,7 +282,7 @@ const IndividualList = () => {
                     setEditingTodo({ todoId: "", id: "", content: "" });
                   }}
                 >
-                  <Text>Close</Text>
+                  <ButtonText>Close</ButtonText>
                 </CancelButton>
               </ButtonContainer>
             </InnerModalContainer>

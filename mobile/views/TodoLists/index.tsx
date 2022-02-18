@@ -14,6 +14,7 @@ import {
   UpdateInput,
   Empty,
   EmptyText,
+  ButtonText
 } from "../../components";
 import { api } from "../../constants";
 
@@ -113,7 +114,9 @@ const TodoLists = () => {
                 <UpdateInput
                   onChangeText={setNewListTitle}
                   value={newListTitle}
+                  multiline={false}
                 ></UpdateInput>
+                <Text></Text>
                 <ButtonContainer>
                   <UpdateButton
                     onPress={() => {
@@ -122,7 +125,7 @@ const TodoLists = () => {
                       setNewListTitle("");
                     }}
                   >
-                    <Text>Update</Text>
+                    <ButtonText>Update</ButtonText>
                   </UpdateButton>
                   <CancelButton
                     onPress={() => {
@@ -130,7 +133,7 @@ const TodoLists = () => {
                       setNewListTitle("");
                     }}
                   >
-                    <Text>Close</Text>
+                    <ButtonText>Close</ButtonText>
                   </CancelButton>
                 </ButtonContainer>
               </InnerModalContainer>
@@ -149,7 +152,9 @@ const TodoLists = () => {
                 <UpdateInput
                   onChangeText={setEditingListText}
                   value={editingListText}
+                  multline={true}
                 ></UpdateInput>
+                <Text></Text>
                 <ButtonContainer>
                   <UpdateButton
                     onPress={() => {
@@ -159,7 +164,7 @@ const TodoLists = () => {
                       setEditingList({ id: "", title: "" });
                     }}
                   >
-                    <Text>Update</Text>
+                    <ButtonText>Update</ButtonText>
                   </UpdateButton>
                   <CancelButton
                     onPress={() => {
@@ -168,7 +173,7 @@ const TodoLists = () => {
                       setEditingList({ id: "", title: "" });
                     }}
                   >
-                    <Text>Close</Text>
+                    <ButtonText>Close</ButtonText>
                   </CancelButton>
                 </ButtonContainer>
               </InnerModalContainer>
@@ -195,7 +200,9 @@ const TodoLists = () => {
               <UpdateInput
                 onChangeText={setNewListTitle}
                 value={newListTitle}
+                multiline={true}
               ></UpdateInput>
+              <Text></Text>
               <ButtonContainer>
                 <UpdateButton
                   onPress={() => {
@@ -204,7 +211,7 @@ const TodoLists = () => {
                     setNewListTitle("");
                   }}
                 >
-                  <Text>Update</Text>
+                  <ButtonText>Add</ButtonText>
                 </UpdateButton>
                 <CancelButton
                   onPress={() => {
@@ -212,7 +219,7 @@ const TodoLists = () => {
                     setNewListTitle("");
                   }}
                 >
-                  <Text>Close</Text>
+                  <ButtonText>Close</ButtonText>
                 </CancelButton>
               </ButtonContainer>
             </InnerModalContainer>
@@ -231,7 +238,9 @@ const TodoLists = () => {
               <UpdateInput
                 onChangeText={setEditingListText}
                 value={editingListText}
+                multiline={true}
               ></UpdateInput>
+              <Text></Text>
               <ButtonContainer>
                 <UpdateButton
                   onPress={() => {
@@ -241,7 +250,7 @@ const TodoLists = () => {
                     setEditingList({ id: "", title: "" });
                   }}
                 >
-                  <Text>Update</Text>
+                  <ButtonText>Update</ButtonText>
                 </UpdateButton>
                 <CancelButton
                   onPress={() => {
@@ -250,7 +259,7 @@ const TodoLists = () => {
                     setEditingList({ id: "", title: "" });
                   }}
                 >
-                  <Text>Close</Text>
+                  <ButtonText>Close</ButtonText>
                 </CancelButton>
               </ButtonContainer>
             </InnerModalContainer>
