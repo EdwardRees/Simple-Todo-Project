@@ -1,9 +1,7 @@
-import * as React from "react";
-import { View, Text, Modal, TouchableOpacity, ScrollView } from "react-native";
-import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
-
-const { useState, useEffect } = React;
+import * as React from "react";
+import { ScrollView, Text, View } from "react-native";
+import styled from "styled-components/native";
 
 const Container = styled.View`
   padding: 20px;
@@ -43,7 +41,7 @@ const TodoItem = (props: any) => {
           ></Ionicons>
         )}
       </View>
-      <ScrollView style={{paddingHorizontal: 10}}>
+      <ScrollView style={{ paddingHorizontal: 10 }}>
         <Text style={{ fontSize: 16 }}>{content}</Text>
       </ScrollView>
       <Buttons>

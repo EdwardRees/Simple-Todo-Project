@@ -16,5 +16,7 @@ string += "\n";
 string += "export { api };\n";
 
 # Creates the file for us to know where to connect to
-with open("mobile/constants/index.tsx", "w") as f:
+with open("mobile-ts/constants/index.tsx", "w") as f:
+    f.write(string)
+with open("mobile-js/constants/index.jsx", "w") as f:
     f.write(string)

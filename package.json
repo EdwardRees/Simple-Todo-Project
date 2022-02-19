@@ -12,7 +12,8 @@
   "scripts": {
     "backend": "npm start --prefix backend start",
     "frontend": "npm start --prefix frontend start",
-    "mobile": "python3 ip.py; npm start --prefix mobile",
+    "mobile": "python3 ip.py; npm start --prefix mobile-ts",
+    "mobile-js": "python3 ip.py; npm start --prefix mobile-js",
     "concurrently": "concurrently \"yarn backend\" \"yarn frontend\" \"yarn mobile\""
   }
 }

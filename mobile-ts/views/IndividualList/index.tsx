@@ -2,20 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import * as React from "react";
-import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
-import {
-  ButtonContainer,
-  CancelButton,
-  Empty,
-  EmptyText,
-  InnerModalContainer,
-  ModalViewContainer,
-  TodoItem,
-  UpdateButton,
-  UpdateInput,
-  ButtonText,
-  InputModal,
-} from "../../components";
+import { FlatList, SafeAreaView, View } from "react-native";
+import { Empty, EmptyText, InputModal, TodoItem } from "../../components";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
 const { useState, useEffect } = React;

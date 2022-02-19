@@ -3,20 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
-import {
-  ButtonContainer,
-  CancelButton,
-  InnerModalContainer,
-  ModalViewContainer,
-  TodoListItem,
-  UpdateButton,
-  UpdateInput,
-  Empty,
-  EmptyText,
-  ButtonText,
-  InputModal,
-} from "../../components";
+import { FlatList, SafeAreaView, View } from "react-native";
+import { Empty, EmptyText, InputModal, TodoListItem } from "../../components";
 import { api } from "../../constants";
 
 const TodoLists = () => {

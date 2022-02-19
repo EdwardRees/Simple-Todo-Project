@@ -1,13 +1,13 @@
 import * as React from "react";
-import { Text, Modal } from "react-native";
+import { Modal, Text } from "react-native";
 import {
-  ModalViewContainer,
-  InnerModalContainer,
-  UpdateInput,
   ButtonContainer,
-  UpdateButton,
-  CancelButton,
   ButtonText,
+  CancelButton,
+  InnerModalContainer,
+  ModalViewContainer,
+  UpdateButton,
+  UpdateInput,
 } from "../ModalComponents";
 
 const InputModal = ({
@@ -19,7 +19,7 @@ const InputModal = ({
   updateText,
   cancelButtonPress,
   cancelText,
-  multiline = false
+  multiline = false,
 }: any) => {
   return (
     <Modal

@@ -1,8 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as React from "react";
-import { Text, TouchableOpacity, ScrollView } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-
 import { toTitleCase } from "../../util";
 
 const Container = styled.View`
@@ -20,7 +19,7 @@ const Buttons = styled.View`
   justify-content: space-between;
 `;
 
-const TodoListItem = (props: any) => {
+const TodoListItem = (props) => {
   const { onPress, id, title, onEdit, onDelete } = props;
   return (
     <TouchableOpacity onPress={onPress}>
