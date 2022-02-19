@@ -5,10 +5,16 @@ import * as React from "react";
 import { FlatList, Modal, SafeAreaView, Text, View } from "react-native";
 import {
   ButtonContainer,
-  CancelButton, Empty,
-  EmptyText, InnerModalContainer,
-  ModalViewContainer, TodoItem, UpdateButton,
-  UpdateInput, ButtonText
+  CancelButton,
+  Empty,
+  EmptyText,
+  InnerModalContainer,
+  ModalViewContainer,
+  TodoItem,
+  UpdateButton,
+  UpdateInput,
+  ButtonText,
+  InputModal,
 } from "../../components";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
@@ -79,7 +85,6 @@ const IndividualList = () => {
         content={todoItems.content}
         complete={todoItems.complete}
         onEdit={() => {
-          console.info(`Pressed Edit for ${todoItems.content}!`);
           setEditingTodo({
             todoId: todoItems.todoId,
             id: todoItems.id,
@@ -109,90 +114,48 @@ const IndividualList = () => {
     if (todoItems.length === 0) {
       return (
         <SafeAreaView>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={addModalVisible}
-            onRequestClose={() => {
+          <InputModal
+            modalVisible={addModalVisible}
+            setModalVisible={setAddModalVisible}
+            inputOnChange={setNewTodoContent}
+            inputValue={newTodoContent}
+            updateButtonPress={() => {
+              addTodo(id, newTodoContent);
               setAddModalVisible(false);
+              setNewTodoContent("");
             }}
-          >
-            <ModalViewContainer>
-              <InnerModalContainer>
-                <UpdateInput
-                  onChangeText={setNewTodoContent}
-                  value={newTodoContent}
-                  multiline={true}
-                ></UpdateInput>
-                <Text></Text>
-                <ButtonContainer>
-                  <UpdateButton
-                    onPress={() => {
-                      addTodo(id, newTodoContent);
-                      setAddModalVisible(false);
-                      setNewTodoContent("");
-                    }}
-                  >
-                    <ButtonText>Update</ButtonText>
-                  </UpdateButton>
-                  <CancelButton
-                    onPress={() => {
-                      setAddModalVisible(false);
-                      setNewTodoContent("");
-                    }}
-                  >
-                    <ButtonText>Close</ButtonText>
-                  </CancelButton>
-                </ButtonContainer>
-              </InnerModalContainer>
-            </ModalViewContainer>
-          </Modal>
-
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
+            cancelButtonPress={() => {
+              setAddModalVisible(false);
+              setNewTodoContent("");
+            }}
+            updateText={"Add"}
+            cancelText={"Cancel"}
+          ></InputModal>
+          <InputModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            inputOnChange={setEditingContentText}
+            inputValue={editingContentText}
+            updateButtonPress={() => {
+              updateContent(
+                editingTodo.todoId,
+                editingTodo.id,
+                editingContentText
+              );
+              setModalVisible(false);
+              setEditingContentText("");
+              setEditingTodo({ todoId: "", id: "", content: "" });
+            }}
+            cancelButtonPress={() => {
               setModalVisible(!modalVisible);
+              setEditingContentText("");
+              setEditingTodo({ todoId: "", id: "", content: "" });
             }}
-          >
-            <ModalViewContainer>
-              <InnerModalContainer>
-                <UpdateInput
-                  onChangeText={setEditingContentText}
-                  value={editingContentText}
-                  multiline={true}
-                ></UpdateInput>
-                <Text></Text>
-                <ButtonContainer>
-                  <UpdateButton
-                    onPress={() => {
-                      console.info(`Pressed Update for ${editingContentText}!`);
-                      updateContent(
-                        editingTodo.todoId,
-                        editingTodo.id,
-                        editingContentText
-                      );
-                      setModalVisible(false);
-                      setEditingContentText("");
-                      setEditingTodo({ todoId: "", id: "", content: "" });
-                    }}
-                  >
-                    <ButtonText>Update</ButtonText>
-                  </UpdateButton>
-                  <CancelButton
-                    onPress={() => {
-                      setModalVisible(!modalVisible);
-                      setEditingContentText("");
-                      setEditingTodo({ todoId: "", id: "", content: "" });
-                    }}
-                  >
-                    <ButtonText>Close</ButtonText>
-                  </CancelButton>
-                </ButtonContainer>
-              </InnerModalContainer>
-            </ModalViewContainer>
-          </Modal>
+            updateText={"Update"}
+            cancelText={"Cancel"}
+            multiline={true}
+          ></InputModal>
+
           <Empty>
             <EmptyText>
               No Items Found in List: "{toTitleCase(title)}"
@@ -203,91 +166,48 @@ const IndividualList = () => {
     }
     return (
       <SafeAreaView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={addModalVisible}
-          onRequestClose={() => {
+        <InputModal
+          modalVisible={addModalVisible}
+          setModalVisible={setAddModalVisible}
+          inputOnChange={setNewTodoContent}
+          inputValue={newTodoContent}
+          updateButtonPress={() => {
+            addTodo(id, newTodoContent);
             setAddModalVisible(false);
+            setNewTodoContent("");
           }}
-        >
-          <ModalViewContainer>
-            <InnerModalContainer>
-              <UpdateInput
-                onChangeText={setNewTodoContent}
-                value={newTodoContent}
-                multiline={true}
-              ></UpdateInput>
-              <Text></Text>
-              <ButtonContainer>
-                <UpdateButton
-                  onPress={() => {
-                    addTodo(id, newTodoContent);
-                    setAddModalVisible(false);
-                    setNewTodoContent("");
-                  }}
-                >
-                  <ButtonText>Add</ButtonText>
-                </UpdateButton>
-                <Text>{" "}</Text>
-                <CancelButton
-                  onPress={() => {
-                    setAddModalVisible(false);
-                    setNewTodoContent("");
-                  }}
-                >
-                  <ButtonText>Close</ButtonText>
-                </CancelButton>
-              </ButtonContainer>
-            </InnerModalContainer>
-          </ModalViewContainer>
-        </Modal>
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
+          cancelButtonPress={() => {
+            setAddModalVisible(false);
+            setNewTodoContent("");
+          }}
+          updateText={"Add"}
+          cancelText={"Cancel"}
+        ></InputModal>
+        <InputModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          inputOnChange={setEditingContentText}
+          inputValue={editingContentText}
+          updateButtonPress={() => {
+            updateContent(
+              editingTodo.todoId,
+              editingTodo.id,
+              editingContentText
+            );
+            setModalVisible(false);
+            setEditingContentText("");
+            setEditingTodo({ todoId: "", id: "", content: "" });
+          }}
+          cancelButtonPress={() => {
             setModalVisible(!modalVisible);
+            setEditingContentText("");
+            setEditingTodo({ todoId: "", id: "", content: "" });
           }}
-        >
-          <ModalViewContainer>
-            <InnerModalContainer>
-              <UpdateInput
-                onChangeText={setEditingContentText}
-                value={editingContentText}
-                multiline={true}
-              ></UpdateInput>
-              <Text></Text>
-              <ButtonContainer>
-                <UpdateButton
-                  onPress={() => {
-                    console.info(`Pressed Update for ${editingContentText}!`);
-                    updateContent(
-                      editingTodo.todoId,
-                      editingTodo.id,
-                      editingContentText
-                    );
-                    setModalVisible(false);
-                    setEditingContentText("");
-                    setEditingTodo({ todoId: "", id: "", content: "" });
-                  }}
-                >
-                  <ButtonText>Update</ButtonText>
-                </UpdateButton>
-                <CancelButton
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                    setEditingContentText("");
-                    setEditingTodo({ todoId: "", id: "", content: "" });
-                  }}
-                >
-                  <ButtonText>Close</ButtonText>
-                </CancelButton>
-              </ButtonContainer>
-            </InnerModalContainer>
-          </ModalViewContainer>
-        </Modal>
+          updateText={"Update"}
+          cancelText={"Cancel"}
+          multiline={true}
+        ></InputModal>
+
         <FlatList data={todoItems} renderItem={renderTodoItems} />
       </SafeAreaView>
     );
@@ -314,10 +234,6 @@ const IndividualList = () => {
       },
     });
   }, []);
-
-  // useEffect(() => {
-  //   getTodoItems();
-  // }, [todoItems]); // TODO FIX OVER PULL
 
   return <View>{renderItems(todoItems)}</View>;
 };

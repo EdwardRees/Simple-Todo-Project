@@ -14,7 +14,8 @@ import {
   UpdateInput,
   Empty,
   EmptyText,
-  ButtonText
+  ButtonText,
+  InputModal,
 } from "../../components";
 import { api } from "../../constants";
 
@@ -101,84 +102,42 @@ const TodoLists = () => {
     if (todoLists.length === 0) {
       return (
         <SafeAreaView>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={addModalVisible}
-            onRequestClose={() => {
+          <InputModal
+            modalVisible={addModalVisible}
+            setModalVisible={setAddModalVisible}
+            inputOnChange={(text) => setNewListTitle(text)}
+            inputValue={newListTitle}
+            updateButtonPress={() => {
+              addList(newListTitle);
               setAddModalVisible(false);
+              setNewListTitle("");
             }}
-          >
-            <ModalViewContainer>
-              <InnerModalContainer>
-                <UpdateInput
-                  onChangeText={setNewListTitle}
-                  value={newListTitle}
-                  multiline={false}
-                ></UpdateInput>
-                <Text></Text>
-                <ButtonContainer>
-                  <UpdateButton
-                    onPress={() => {
-                      addList(newListTitle);
-                      setAddModalVisible(false);
-                      setNewListTitle("");
-                    }}
-                  >
-                    <ButtonText>Update</ButtonText>
-                  </UpdateButton>
-                  <CancelButton
-                    onPress={() => {
-                      setAddModalVisible(false);
-                      setNewListTitle("");
-                    }}
-                  >
-                    <ButtonText>Close</ButtonText>
-                  </CancelButton>
-                </ButtonContainer>
-              </InnerModalContainer>
-            </ModalViewContainer>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
+            cancelButtonPress={() => {
+              setAddModalVisible(false);
+              setNewListTitle("");
+            }}
+            updateText={"Add"}
+            cancelText={"Cancel"}
+          ></InputModal>
+          <InputModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            inputOnChange={(text) => setEditingListText(text)}
+            inputValue={editingListText}
+            updateButtonPress={() => {
+              updateList(editingList.id, editingListText);
               setModalVisible(false);
+              setEditingListText("");
+              setEditingList({ id: "", title: "" });
             }}
-          >
-            <ModalViewContainer>
-              <InnerModalContainer>
-                <UpdateInput
-                  onChangeText={setEditingListText}
-                  value={editingListText}
-                  multline={true}
-                ></UpdateInput>
-                <Text></Text>
-                <ButtonContainer>
-                  <UpdateButton
-                    onPress={() => {
-                      updateList(editingList.id, editingListText);
-                      setModalVisible(false);
-                      setEditingListText("");
-                      setEditingList({ id: "", title: "" });
-                    }}
-                  >
-                    <ButtonText>Update</ButtonText>
-                  </UpdateButton>
-                  <CancelButton
-                    onPress={() => {
-                      setModalVisible(!modalVisible);
-                      setEditingListText("");
-                      setEditingList({ id: "", title: "" });
-                    }}
-                  >
-                    <ButtonText>Close</ButtonText>
-                  </CancelButton>
-                </ButtonContainer>
-              </InnerModalContainer>
-            </ModalViewContainer>
-          </Modal>
+            cancelButtonPress={() => {
+              setModalVisible(false);
+              setEditingListText("");
+              setEditingList({ id: "", title: "" });
+            }}
+            updateText={"Update"}
+            cancelText={"Cancel"}
+          ></InputModal>
           <Empty>
             <EmptyText>No Todo Lists Found!</EmptyText>
           </Empty>
@@ -187,84 +146,42 @@ const TodoLists = () => {
     }
     return (
       <SafeAreaView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={addModalVisible}
-          onRequestClose={() => {
+        <InputModal
+          modalVisible={addModalVisible}
+          setModalVisible={setAddModalVisible}
+          inputOnChange={(text) => setNewListTitle(text)}
+          inputValue={newListTitle}
+          updateButtonPress={() => {
+            addList(newListTitle);
             setAddModalVisible(false);
+            setNewListTitle("");
           }}
-        >
-          <ModalViewContainer>
-            <InnerModalContainer>
-              <UpdateInput
-                onChangeText={setNewListTitle}
-                value={newListTitle}
-                multiline={true}
-              ></UpdateInput>
-              <Text></Text>
-              <ButtonContainer>
-                <UpdateButton
-                  onPress={() => {
-                    addList(newListTitle);
-                    setAddModalVisible(false);
-                    setNewListTitle("");
-                  }}
-                >
-                  <ButtonText>Add</ButtonText>
-                </UpdateButton>
-                <CancelButton
-                  onPress={() => {
-                    setAddModalVisible(false);
-                    setNewListTitle("");
-                  }}
-                >
-                  <ButtonText>Close</ButtonText>
-                </CancelButton>
-              </ButtonContainer>
-            </InnerModalContainer>
-          </ModalViewContainer>
-        </Modal>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
+          cancelButtonPress={() => {
+            setAddModalVisible(false);
+            setNewListTitle("");
+          }}
+          updateText={"Add"}
+          cancelText={"Cancel"}
+        ></InputModal>
+        <InputModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          inputOnChange={(text) => setEditingListText(text)}
+          inputValue={editingListText}
+          updateButtonPress={() => {
+            updateList(editingList.id, editingListText);
             setModalVisible(false);
+            setEditingListText("");
+            setEditingList({ id: "", title: "" });
           }}
-        >
-          <ModalViewContainer>
-            <InnerModalContainer>
-              <UpdateInput
-                onChangeText={setEditingListText}
-                value={editingListText}
-                multiline={true}
-              ></UpdateInput>
-              <Text></Text>
-              <ButtonContainer>
-                <UpdateButton
-                  onPress={() => {
-                    updateList(editingList.id, editingListText);
-                    setModalVisible(false);
-                    setEditingListText("");
-                    setEditingList({ id: "", title: "" });
-                  }}
-                >
-                  <ButtonText>Update</ButtonText>
-                </UpdateButton>
-                <CancelButton
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                    setEditingListText("");
-                    setEditingList({ id: "", title: "" });
-                  }}
-                >
-                  <ButtonText>Close</ButtonText>
-                </CancelButton>
-              </ButtonContainer>
-            </InnerModalContainer>
-          </ModalViewContainer>
-        </Modal>
+          cancelButtonPress={() => {
+            setModalVisible(!modalVisible);
+            setEditingListText("");
+            setEditingList({ id: "", title: "" });
+          }}
+          updateText={"Update"}
+          cancelText={"Cancel"}
+        ></InputModal>
         <FlatList data={todoLists} renderItem={renderTodoList} />
       </SafeAreaView>
     );
@@ -274,9 +191,6 @@ const TodoLists = () => {
     getLists();
     navigation.setOptions(navigationOptions);
   }, []);
-  // useEffect(() => {
-  //   getLists();
-  // }, [todoLists]);
 
   return <View>{renderLists(todoLists)}</View>;
 };
