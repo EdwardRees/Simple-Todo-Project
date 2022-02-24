@@ -1,18 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
-import { Empty, EmptyText, InputModal, TodoItem } from "../../components";
-import { api } from "../../constants";
-import { toTitleCase } from "../../util";
 import { connect } from "react-redux";
 import {
-  getTodos,
   addTodo,
-  removeTodo,
   completeTodo,
+  getTodos,
+  removeTodo,
   updateTodo,
 } from "../../actions";
+import { Empty, EmptyText, InputModal, TodoItem } from "../../components";
+import { toTitleCase } from "../../util";
 
 const IndividualList = ({
   getTodos,
@@ -25,9 +24,7 @@ const IndividualList = ({
   const navigation = useNavigation();
   const route = useRoute();
   const params: any = route.params;
-  const todoList = params.todoList;
-  const { id, title } = todoList;
-  const todoListId = id;
+  const { id, title } = params;
   const [modalVisible, setModalVisible] = useState(false);
   const [editingTodo, setEditingTodo] = useState({
     todoId: "",

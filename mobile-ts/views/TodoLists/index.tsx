@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
 import { connect } from "react-redux";
 import {
-  getTodoLists,
-  deleteTodoList,
   addTodoList,
+  deleteTodoList,
+  getTodoLists,
   updateTodoList,
 } from "../../actions/todolist";
 import { Empty, EmptyText, InputModal, TodoListItem } from "../../components";
@@ -50,7 +50,7 @@ const TodoLists = ({
     const todoList = item;
     const navigateLocation: any = {
       name: "IndividualList",
-      params: { todoList },
+      params: { id: todoList.id, title: todoList.title },
     };
     return (
       <TodoListItem
