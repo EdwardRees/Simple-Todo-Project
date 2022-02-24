@@ -1,30 +1,22 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import * as React from "react";
+import { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
-import { connect } from "react-redux";
-import {
-  getTodoLists,
-  deleteTodoList,
-  addTodoList,
-  updateTodoList,
-} from "../../actions/todolist";
 import { Empty, EmptyText, InputModal, TodoListItem } from "../../components";
+import { api } from "../../constants";
 
-const TodoLists = ({
-  getTodoLists,
-  addTodoList,
-  updateTodoList,
-  deleteTodoList,
-  todoLists,
-}: any) => {
-  useEffect(() => {
-    getTodoLists();
-  }, [getTodoLists]);
 
-  useEffect(() => {
-    navigation.setOptions(navigationOptions);
-  }, []);
+const TodoLists = () => {
+  const navigation = useNavigation();
+  const [todoLists, setTodoLists] = useState([]); // [{ id: string, title: string, todoItems: [todoItems] }]
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editingList, setEditingList] = useState({ id: "", title: "" });
+  const [editingListText, setEditingListText] = useState("");
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [newListTitle, setNewListTitle] = useState("");
+
   const navigationOptions = {
     title: "Todo Lists",
     headerRight: () => {
@@ -39,12 +31,6 @@ const TodoLists = ({
       );
     },
   };
-  const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editingList, setEditingList] = useState({ id: "", title: "" });
-  const [editingListText, setEditingListText] = useState("");
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [newListTitle, setNewListTitle] = useState("");
 
   const renderTodoList = ({ item }: any) => {
     const todoList = item;
@@ -64,14 +50,44 @@ const TodoLists = ({
           setEditingListText(todoList.title);
           setModalVisible(true);
         }}
-        onDelete={() => {
-          deleteTodoList(todoList.id);
-        }}
+        onDelete={() => deleteList(todoList.id)}
       />
     );
   };
 
-  const renderLists = () => {
+  const getLists = () => {
+    return axios
+      .get(`${api}/todos`, {})
+      .then((res) => {
+        setTodoLists(res.data); // res.data is an array of todo lists
+      })
+      .catch((err) => console.log(err.response.data));
+  };
+
+  const addList = (title: string) => {
+    return axios
+      .post(`${api}/todos`, { title })
+      .then(() => {
+        getLists();
+      })
+      .catch((err) => console.error(err.response.data));
+  };
+
+  const updateList = (id: string, title: string) => {
+    return axios
+      .put(`${api}/todos/${id}`, { title: `${title}` })
+      .then(() => getLists())
+      .catch((err) => console.error(err.response.data));
+  };
+
+  const deleteList = (id: string) => {
+    return axios
+      .delete(`${api}/todos/${id}`)
+      .then(() => getLists())
+      .catch((err) => console.error(err.response.data));
+  };
+
+  const renderLists = (todoLists: any) => {
     if (todoLists.length === 0) {
       return (
         <SafeAreaView>
@@ -81,7 +97,7 @@ const TodoLists = ({
             inputOnChange={(text) => setNewListTitle(text)}
             inputValue={newListTitle}
             updateButtonPress={() => {
-              addTodoList(newListTitle);
+              addList(newListTitle);
               setAddModalVisible(false);
               setNewListTitle("");
             }}
@@ -98,7 +114,7 @@ const TodoLists = ({
             inputOnChange={(text) => setEditingListText(text)}
             inputValue={editingListText}
             updateButtonPress={() => {
-              updateTodoList(editingList.id, editingListText);
+              updateList(editingList.id, editingListText);
               setModalVisible(false);
               setEditingListText("");
               setEditingList({ id: "", title: "" });
@@ -125,7 +141,7 @@ const TodoLists = ({
           inputOnChange={(text) => setNewListTitle(text)}
           inputValue={newListTitle}
           updateButtonPress={() => {
-            addTodoList(newListTitle);
+            addList(newListTitle);
             setAddModalVisible(false);
             setNewListTitle("");
           }}
@@ -142,7 +158,7 @@ const TodoLists = ({
           inputOnChange={(text) => setEditingListText(text)}
           inputValue={editingListText}
           updateButtonPress={() => {
-            updateTodoList(editingList.id, editingListText);
+            updateList(editingList.id, editingListText);
             setModalVisible(false);
             setEditingListText("");
             setEditingList({ id: "", title: "" });
@@ -160,18 +176,12 @@ const TodoLists = ({
     );
   };
 
-  return <View>{renderLists()}</View>;
+  useEffect(() => {
+    getLists();
+    navigation.setOptions(navigationOptions);
+  }, []);
+
+  return <View>{renderLists(todoLists)}</View>;
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    todoLists: state.todolist.todoLists,
-  };
-};
-
-export default connect(mapStateToProps, {
-  getTodoLists,
-  deleteTodoList,
-  updateTodoList,
-  addTodoList,
-})(TodoLists);
+export { TodoLists };

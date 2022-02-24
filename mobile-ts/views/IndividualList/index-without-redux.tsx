@@ -1,33 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import * as React from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
 import { Empty, EmptyText, InputModal, TodoItem } from "../../components";
 import { api } from "../../constants";
 import { toTitleCase } from "../../util";
-import { connect } from "react-redux";
-import {
-  getTodos,
-  addTodo,
-  removeTodo,
-  completeTodo,
-  updateTodo,
-} from "../../actions";
+const { useState, useEffect } = React;
 
-const IndividualList = ({
-  getTodos,
-  addTodo,
-  removeTodo,
-  completeTodo,
-  updateTodo,
-  todoItems,
-}: any) => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const params: any = route.params;
-  const todoList = params.todoList;
-  const { id, title } = todoList;
-  const todoListId = id;
+const IndividualList = () => {
+  const [todoItems, setTodoItems] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [editingTodo, setEditingTodo] = useState({
     todoId: "",
@@ -38,23 +20,50 @@ const IndividualList = ({
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [newTodoContent, setNewTodoContent] = useState("");
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: toTitleCase(title),
-      headerRight: () => {
-        return (
-          <Ionicons
-            name="add-outline"
-            size={30}
-            onPress={() => setAddModalVisible(true)}
-          />
-        );
-      },
-    });
-  }, []);
-  useEffect(() => {
-    getTodos(id);
-  }, [getTodos]);
+  const addTodo = (todoListId: string, content: string) => {
+    return axios
+      .post(`${api}/todos/${todoListId}/items`, {
+        content,
+        complete: `${false}`,
+      })
+      .then(() => getTodoItems())
+      .catch((err) => console.error(err.response.data));
+  };
+
+  const updateContent = (
+    todoId: string,
+    todoItemId: string,
+    content: string
+  ) => {
+    return axios
+      .put(`${api}/todos/${todoId}/items/${todoItemId}`, {
+        content: `${content}`,
+      })
+      .then(() => {
+        getTodoItems();
+      })
+      .catch((err) => console.error(err.response.data));
+  };
+
+  const updateComplete = (
+    todoId: string,
+    todoItemId: string,
+    complete: boolean
+  ) => {
+    return axios
+      .put(`${api}/todos/${todoId}/items/${todoItemId}`, {
+        complete: `${complete}`,
+      })
+      .then(() => getTodoItems())
+      .catch((err) => console.error(err.response.data));
+  };
+
+  const deleteTodo = (todoId: string, todoItemId: string) => {
+    return axios
+      .delete(`${api}/todos/${todoId}/items/${todoItemId}`)
+      .then(() => getTodoItems())
+      .catch((err) => console.error(err.response.data));
+  };
 
   const renderTodoItems = ({ item }: any) => {
     const todoItems = item;
@@ -73,15 +82,24 @@ const IndividualList = ({
           setModalVisible(true);
         }}
         onCheck={() => {
-          completeTodo(todoItems.todoId, todoItems.id, !todoItems.complete);
+          updateComplete(todoItems.todoId, todoItems.id, !todoItems.complete);
         }}
-        onDelete={() => removeTodo(todoItems.todoId, todoItems.id)}
+        onDelete={() => deleteTodo(todoItems.todoId, todoItems.id)}
       />
     );
   };
 
+  const getTodoItems = () => {
+    return axios
+      .get(`${api}/todos/${id}`, {})
+      .then((res) => {
+        setTodoItems(res.data.todoItems);
+      })
+      .catch((err) => console.log(err.response.data));
+  };
+
   const renderItems = (todoItems: any) => {
-    if (todoItems?.length === 0) {
+    if (todoItems.length === 0) {
       return (
         <SafeAreaView>
           <InputModal
@@ -107,7 +125,7 @@ const IndividualList = ({
             inputOnChange={setEditingContentText}
             inputValue={editingContentText}
             updateButtonPress={() => {
-              updateTodo(
+              updateContent(
                 editingTodo.todoId,
                 editingTodo.id,
                 editingContentText
@@ -159,7 +177,11 @@ const IndividualList = ({
           inputOnChange={setEditingContentText}
           inputValue={editingContentText}
           updateButtonPress={() => {
-            updateTodo(editingTodo.todoId, editingTodo.id, editingContentText);
+            updateContent(
+              editingTodo.todoId,
+              editingTodo.id,
+              editingContentText
+            );
             setModalVisible(false);
             setEditingContentText("");
             setEditingTodo({ todoId: "", id: "", content: "" });
@@ -179,18 +201,29 @@ const IndividualList = ({
     );
   };
 
+  const navigation = useNavigation();
+  const route = useRoute();
+  const params: any = route.params;
+  const todoList = params.todoList;
+  const { id, title } = todoList;
+
+  useEffect(() => {
+    getTodoItems();
+    navigation.setOptions({
+      title: toTitleCase(title),
+      headerRight: () => {
+        return (
+          <Ionicons
+            name="add-outline"
+            size={30}
+            onPress={() => setAddModalVisible(true)}
+          />
+        );
+      },
+    });
+  }, []);
+
   return <View>{renderItems(todoItems)}</View>;
 };
-const mapStateToProps = (state: any) => {
-  return {
-    todoItems: state.todos.todoList.todoItems,
-  };
-};
 
-export default connect(mapStateToProps, {
-  getTodos,
-  removeTodo,
-  updateTodo,
-  completeTodo,
-  addTodo,
-})(IndividualList);
+export { IndividualList };
